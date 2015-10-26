@@ -1,0 +1,16 @@
+---
+- name:  Build Develop Environment
+  hosts: default
+  user:  vagrant
+  # tasks:
+  #   - debug: msg="test"
+
+  roles:
+    - foundation
+    - ntp
+    - nginx
+    - ruby
+    - rails
+    - nodejs
+    - mysql
+    - imagemagick

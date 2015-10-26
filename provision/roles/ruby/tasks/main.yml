@@ -1,0 +1,54 @@
+---
+- name: install dependencies for rbenv
+  sudo: yes
+  apt:  name={{ item }} state=latest
+  with_items:
+    - autoconf
+    - bison
+    - build-essential
+    - libssl-dev
+    - libyaml-dev
+    - libreadline6-dev
+    - libncurses5-dev
+    - libffi-dev
+    - libgdbm3
+    - libgdbm-dev
+    - zlib1g-dev
+
+- name: install rbenv
+  git:  repo=https://github.com/sstephenson/rbenv.git dest=~/.rbenv
+
+- name: add ~.rbenv/bin to PATH
+  lineinfile: >
+    dest="~/.profile"
+    line="export PATH=$HOME/.rbenv/bin:$PATH"
+
+- name: eval rbenv init in ~/.profile
+  lineinfile: >
+    dest="~/.profile"
+    line='eval "$(rbenv init -)"'
+
+- name: install ruby-build as rbenv plugin
+  sudo: yes
+  sudo_user: "{{ rbenv_user }}"
+  git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
+#
+- name: check if version is installed ruby
+  shell: "sudo -iu {{ rbenv_user }} rbenv versions | grep {{ rbenv_ruby_version }}"
+  register: rbenv_check_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: install ruby
+  shell: /bin/bash -lc "rbenv install {{ rbenv_ruby_version }}"
+  when: rbenv_check_install|failed
+
+- name: check if version is the default ruby version
+  shell: "sudo -iu {{ rbenv_user }} rbenv version | grep {{ rbenv_ruby_version }}"
+  register: rbenv_check_default
+  changed_when: False
+  ignore_errors: yes
+
+- name: set ruby global version
+  shell: /bin/bash -lc "rbenv global {{ rbenv_ruby_version }}"
+  when: rbenv_check_default|failed

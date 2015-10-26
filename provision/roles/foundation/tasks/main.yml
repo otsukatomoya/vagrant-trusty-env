@@ -1,0 +1,39 @@
+---
+- name: set hostname
+  hostname:
+    name: vagrant-trusty-env
+  sudo: yes
+
+- name: apt-get update
+  apt:
+    update_cache: yes
+  sudo: yes
+
+- name: apt-get upgrade
+  apt:
+    upgrade: full
+  sudo: yes
+
+- name: install foundation packages
+  sudo: yes
+  apt:
+    pkg:   '{{ item }}'
+    state: installed
+  with_items:
+    - build-essential
+    - curl
+    - gcc
+    - g++
+    - git
+    - libcurl4-openssl-dev
+    - make
+    - python-software-properties
+    - vim
+    - wget
+
+# - name: ufw
+#   remote_user: root
+#   ufw:  policy=deny rule=allow state=enabled port={{ item }}
+#   with_items:
+#     - 22
+#     - 80

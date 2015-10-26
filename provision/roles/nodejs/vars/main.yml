@@ -1,0 +1,4 @@
+---
+nodebrew_install_user: 'vagrant'
+nodebrew_nodejs_version: '0.12.4'
+nodebrew_path: '.nodebrew/current/bin'

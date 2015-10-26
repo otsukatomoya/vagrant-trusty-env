@@ -1,0 +1,27 @@
+- name: install MySQL
+  apt:
+    pkg:   '{{ item }}'
+    state: installed
+  with_items:
+    - mysql-server-5.6
+    - mysql-client-core-5.6
+    - mysql-client-5.6
+    - libmysqlclient-dev
+  sudo: yes
+
+- name: updat my.cnf
+  template:
+    src:  my.cnf
+    dest: /etc/mysql/my.cnf
+  sudo: yes
+
+- name: delete ib_logfiles
+  shell: rm -rf /var/lib/mysql/ib_logfile*
+  sudo: yes
+
+- name: reload MySQL
+  service:
+    name:  mysql
+    state: restarted
+  sudo: yes
+  ignore_errors: yes

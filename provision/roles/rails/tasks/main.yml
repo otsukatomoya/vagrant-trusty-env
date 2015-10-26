@@ -1,0 +1,8 @@
+---
+- name: install rails
+  sudo_user: "{{ rbenv_user }}"
+  gem: name=rails version={{ rails_version }} executable=~/.rbenv/shims/gem user_install=false
+
+- name: install bundler
+  sudo_user: "{{ rbenv_user }}"
+  gem:  name=bundler executable=~/.rbenv/shims/gem user_install=false

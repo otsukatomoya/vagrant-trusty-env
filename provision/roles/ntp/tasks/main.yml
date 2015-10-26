@@ -1,0 +1,27 @@
+- name: install ntp
+  apt:
+    name:  ntp
+    state: present
+  sudo: yes
+
+- name: edit ntp.conf
+  template:
+    src:  ntp.conf
+    dest: /etc/ntp.conf
+  sudo: yes
+
+- name: reload ntp
+  service:
+    name:  ntp
+    state: restarted
+  sudo: yes
+
+- name: set time zone
+  command: cp -f /usr/share/zoneinfo/Japan /etc/localtime
+  sudo: yes
+
+- name: set time zone
+  template:
+    src:  timezone
+    dest: /etc/timezone
+  sudo: yes

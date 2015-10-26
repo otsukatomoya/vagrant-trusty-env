@@ -1,0 +1,8 @@
+- name: install ImageMagick
+  apt:
+    pkg:   '{{ item }}'
+    state: installed
+  with_items:
+    - imagemagick
+    - libmagickwand-dev # RMagickをインストールするときに必要
+  sudo: yes

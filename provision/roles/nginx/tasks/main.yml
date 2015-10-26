@@ -1,0 +1,16 @@
+---
+- name: get nginx signing key
+  sudo: yes
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+
+- name: update nginx sources1
+  sudo: yes
+  apt_repository: repo="deb http://nginx.org/packages/ubuntu/ trusty nginx"
+
+- name: update nginx sources2
+  sudo: yes
+  apt_repository: repo="deb-src http://nginx.org/packages/ubuntu/ trusty nginx"
+
+- name: install nginx
+  sudo: yes
+  apt: pkg=nginx state=present update_cache=yes
